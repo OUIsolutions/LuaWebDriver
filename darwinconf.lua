@@ -1,5 +1,6 @@
 local all = {
   [[return (function()    
+      local Private = {};
       local WebDriver = {};
   ]]
     }

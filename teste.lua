@@ -7,3 +7,6 @@ local WebDriver = luawebdriver.newDriver(
     "chrome",
     luabear.fetch
 )
+local session = WebDriver.newSession()
+
+session.print_test()
