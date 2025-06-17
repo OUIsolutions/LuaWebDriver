@@ -10,8 +10,11 @@
 ---@field headers table<string, string>
 ---@field body table
 
----@class LuaDriver
+
+
+
+---@class LuaDriverModule
 ---@field newDriver fun(chromedriver_path: string, chrome_path: string, request_maker: fun(props: RequestProps):RequestResponse): LuaDriver
 
----@type LuaDriver
+---@type LuaDriverModule
 WebDriver = WebDriver
