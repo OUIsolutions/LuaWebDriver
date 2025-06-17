@@ -1,6 +1,6 @@
 local all = {
   [[return (function()    
-      local public = {};
+      local WebDriver = {};
   ]]
     }
   local files = darwin.dtw.list_files_recursively("src",true)
@@ -10,7 +10,7 @@ local all = {
   end
 all[#all + 1] = [[
 
-    return public;
+    return WebDriver;
 end)()]]
 
 
