@@ -6,9 +6,9 @@
 
 ---@class RequestProps
 ---@field url string
----@field method string
----@field headers table<string, string>
----@field body table
+---@field method string | nil
+---@field headers table<string, string> | nil
+---@field body table | string | nil
 
 
 
