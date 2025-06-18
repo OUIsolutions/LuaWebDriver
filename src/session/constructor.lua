@@ -7,6 +7,13 @@ Private.newSession  = function(args, request_provider)
     --selfobj.sessionID = ""
     selfobj.request_maker = request_provider
     selfobj.protocol = args.protocol
+
+    local path = selfobj.protocol .. selfobj.ip .. ":" .. selfobj.port .. "/session"
+
+    --local response = selfobj.request_maker({url = path, method = "POST"})
+
+    print("\n\tPATH:", path, "\n")--, response.read_body())
+
     return selfobj
 end
 
@@ -19,12 +26,6 @@ Private.connectSession = function(args, session, request_provider)
     selfobj.sessionID = session
     selfobj.request_maker = request_provider
     selfobj.protocol = args.protocol
-
-    local path = selfobj.protocol .. selfobj.ip .. ":" .. selfobj.port .. "/session"
-
-    --local response = selfobj.request_maker({url = path, method = "POST"})
-
-    print("\n\tPATH:", path, "\n")--, response.read_body())
 
     return selfobj
 end
