@@ -13,34 +13,39 @@
 ---@field body table | string | nil
 
 ---@class WebDriverFlags
----@field chromedriver_path string
----@field chrome_path string | nil
+---@field chromedriver_path string -- O binario do chromedriver
 ---@field port string | nil
 ---@field verbose boolean | nil
 ---@field allowedClients boolean | nil
 ----@field rawCommand string | nil
 
+--- O Lua session é para ter os callbacks de sessão exemplo, abrir um link, clicar em um botão, etc....
 ---@class LuaSession
----@field ip string
----@field port string
 ---@field sessionID string
----@field request_maker fun(props: RequestProps):RequestResponse | nil
+---@field route string
+---@field request fun(props: RequestProps):RequestResponse | nil
+
+---@class LuaArgumentsServer
+---@field ip string
+---@field route string
+---@field port string
 ---@field protocol string
 
 ---@class LuaServer
----@field request_maker fun(props: RequestProps):RequestResponse
+---@field request fun(props: RequestProps):RequestResponse
+---@field args LuaArgumentsServer
 ---@field newSession fun():LuaSession
 ---@field connectSession fun(sessionID: string) : LuaSession
----@field status fun() : string
+---@field status fun()
 
+---O cliente precisa somente se conectar!
 ---@class LuaArgsClient
----@field ip string
+---@field ip string -- ip da maquina do server
 ---@field port string
----@field protocol string | nil
+---@field protocol string | nil -- Protocolo http ou https
 
 ---@class LuaDriverModule
 ---@field newServer fun(flags: WebDriverFlags, request_maker: fun(props: RequestProps):RequestResponse): LuaServer
----@field newClient fun(args: LuaArgsClient, request_maker: fun(props: RequestProps):RequestResponse): LuaServer
 
 ---@type LuaDriverModule
 WebDriver = WebDriver
