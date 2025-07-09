@@ -14,7 +14,9 @@ Private.WebDriver_aply__gc_method = function (selfobj)
 end
 
 Private.WebDriver_aply_new_session_method = function (selfobj)
-    
+    selfobj.newSession = function (props)
+       return Private.newSession({url = selfobj.url, fetch = props.fetch})
+    end 
 end
 
 WebDriver.newLocalServer = function(props)
@@ -26,9 +28,10 @@ WebDriver.newLocalServer = function(props)
         error("chrome_binary is required")
     end
 
-    local selfobj = {
-        port = props.port or 4444,
-    }
+    local selfobj = {}
+    selfobj.port = props.port or 4444
+    selfobj.url = "http://127.0.1:" .. selfobj.port
+    
     Private.WebDriver_aply__gc_method(selfobj)
     Private.WebDriver_aply_new_session_method(selfobj)
     
