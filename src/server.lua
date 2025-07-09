@@ -16,6 +16,7 @@ WebDriver.newLocalServer = function(props)
     }
 
     function turnoff_chromedriver()
+        print("turning off chromedriver on port " .. selfobj.port)
         os.execute(string.format(
             'curl -X DELETE "http://127.0.0.1:%d/shutdown" >/dev/null 2>&1',
             selfobj.port
