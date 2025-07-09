@@ -16,12 +16,10 @@ WebDriver.newLocalServer = function(props)
     }
 
     function turnoff_chromedriver()
-        if props.fetch then
-            props.fetch({
-                url="http://127.0.0.1:"..selfobj.port.."/shutdown",
-                method="DELETE",
-            })
-        end
+        os.execute(string.format(
+            'curl -X DELETE "http://127.0.0.1:%d/shutdown" >/dev/null 2>&1',
+            selfobj.port
+        ))
     end
     
     setmetatable(selfobj,{__gc = turnoff_chromedriver})
