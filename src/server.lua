@@ -13,7 +13,7 @@ Private.WebDriver_aply__gc_method = function (selfobj)
     setmetatable(selfobj,{__gc = turnoff_chromedriver})
 end
 
-Private.WebDriver_aply_new_session_method = function ()
+Private.WebDriver_aply_new_session_method = function (selfobj)
     
 end
 
@@ -30,7 +30,7 @@ WebDriver.newLocalServer = function(props)
         port = props.port or 4444,
     }
     Private.WebDriver_aply__gc_method(selfobj)
-
+    Private.WebDriver_aply_new_session_method(selfobj)
     
     -- Start chromedriver with proper command formatting
     local command = "%s --port=%d --binary=%s &"
