@@ -1,6 +1,21 @@
 
 
 
+Private.WebDriver_aply__gc_method = function (selfobj)
+    
+    function turnoff_chromedriver()
+        print("turning off chromedriver on port " .. selfobj.port)
+        os.execute(string.format(
+            'curl -X DELETE "http://127.0.0.1:%d/shutdown" >/dev/null 2>&1',
+            selfobj.port
+        ))
+    end    
+    setmetatable(selfobj,{__gc = turnoff_chromedriver})
+end
+
+Private.WebDriver_aply_new_session_method = function ()
+    
+end
 
 WebDriver.newLocalServer = function(props)
 
@@ -14,16 +29,8 @@ WebDriver.newLocalServer = function(props)
     local selfobj = {
         port = props.port or 4444,
     }
+    Private.WebDriver_aply__gc_method(selfobj)
 
-    function turnoff_chromedriver()
-        print("turning off chromedriver on port " .. selfobj.port)
-        os.execute(string.format(
-            'curl -X DELETE "http://127.0.0.1:%d/shutdown" >/dev/null 2>&1',
-            selfobj.port
-        ))
-    end
-    
-    setmetatable(selfobj,{__gc = turnoff_chromedriver})
     
     -- Start chromedriver with proper command formatting
     local command = "%s --port=%d --binary=%s &"

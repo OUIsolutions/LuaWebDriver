@@ -6,3 +6,10 @@
 
 ---@type WebDriver
 WebDriver = WebDriver 
+
+
+---@class WebDriverPrivateFunctions
+
+
+---@type WebDriverPrivateFunctions
+Private  = Private
