@@ -13,10 +13,10 @@ Private.WebDriver_aply__gc_method = function (selfobj)
     setmetatable(selfobj,{__gc = turnoff_chromedriver})
 end
 
-Private.WebDriver_aply_new_session_method = function (selfobj)
-    selfobj.newSession = function (props)
-       return Private.newSession({url = selfobj.url, fetch = props.fetch})
-    end 
+Private.WebDriver_aply_new_session_method = function (selfobj,props)
+    selfobj.newSession = function ()
+       return Private.newSession({url = props.url, fetch = props.fetch})
+    end
 end
 
 WebDriver.newLocalServer = function(props)
@@ -29,15 +29,15 @@ WebDriver.newLocalServer = function(props)
     end
 
     local selfobj = {}
-    selfobj.port = props.port or 4444
-    selfobj.url = "http://127.0.1:" .. selfobj.port
-    
     Private.WebDriver_aply__gc_method(selfobj)
-    Private.WebDriver_aply_new_session_method(selfobj)
+    Private.WebDriver_aply_new_session_method(selfobj,{
+        fetch = props.fetch,
+        url = selfobj.url
+    })
     
     -- Start chromedriver with proper command formatting
     local command = "%s --port=%d --binary=%s &"
-    command = command:format(props.chromedriver_command, selfobj.port, props.chrome_binary)
+    command = command:format(props.chromedriver_command, props.port, props.chrome_binary)
     
     print("Starting chromedriver with command: " .. command)
     os.execute(command)
