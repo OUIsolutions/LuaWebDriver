@@ -17,3 +17,4 @@ PublicSession.navegate_to = function(public,private,url)
         error("Failed to navigate to URL: " .. result.read_body())
     end
 end
+
