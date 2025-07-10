@@ -25,8 +25,6 @@ herigitage.newMetaObject = function (props)
         end
     end
 
-
-
     selfobject.set_private_method = function (method_name, callback)
         selfobject.private[method_name] = function (...)
             return callback(selfobject.public,selfobject.private, ...)
