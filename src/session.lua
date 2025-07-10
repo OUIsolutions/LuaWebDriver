@@ -1,5 +1,5 @@
 
-Private.newSession = function (props)
+Session.newSession = function (props)
 
     local selfobject = Heregitage.newMetaObject()
     selfobject.private_props_extends(props)

@@ -9,7 +9,8 @@ local all = {
   [[return (function()    
       local Private = {};
       local WebDriver = {};
-      local Server  ={}
+      local Server  ={};
+      local Session = {};
   ]]
   }
   all[#all + 1] = "local Heregitage = (function()  "..heregitage .. " end\n)()\n"

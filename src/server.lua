@@ -15,7 +15,7 @@ Server.newSession = function(public,private, props)
         error("binary_location is required")
     end
 
-    return Private.newSession({url = private.url, fetch = private.fetch,binary_location= props.binary_location})
+    return Session.newSession({url = private.url, fetch = private.fetch,binary_location= props.binary_location})
 end
 
 
