@@ -20,7 +20,8 @@ Session.newSession = function (props)
     local selfobject = Heregitage.newMetaObject()
     selfobject.private_props_extends(props)
     selfobject.set_meta_method("__gc", Session.__gc)
-    
+    selfobject.public_method_extends(PublicSession)
+
     local result = props.fetch({
         url=props.url.."/session",
         method = "POST",

@@ -11,6 +11,7 @@ local all = {
       local WebDriver = {};
       local Server  ={};
       local Session = {};
+      local PublicSession = {};
   ]]
   }
   all[#all + 1] = "local Heregitage = (function()  "..heregitage .. " end\n)()\n"
