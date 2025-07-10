@@ -5,11 +5,6 @@ PublicElement.send_keys = function(public, private, keys)
         error("Keys must be a string")
     end
 
-    -- Prepare the request body
-    local body = {
-        value = { keys }
-    }
-
     -- Send the request to the WebDriver server
     local result = private.fetch({
         url = private.url .. "/session/" .. private.session_id .. "/element/" .. private.element_id .. "/value",
@@ -17,7 +12,7 @@ PublicElement.send_keys = function(public, private, keys)
         headers = {
             ["Content-Type"] = "application/json"
         },
-        body = body,
+        body = {text=keys},
         http_version = "1.1"
     })
 
