@@ -20,25 +20,10 @@ WebDriver.newLocalServer = function(props)
         error("chrome_binary is required")
     end
 
-    local selfobj = {}
-
-    local port = props.port or 4444
+    local selfobj = herigitage.newMetaObject({private=props})
+    selfobj.set_meta_method("__gc", Server__gc)
+    selfobj.set_public_method("newSession", Server_newSession)
     
-    herigitage.set_meta_method({
-        obj = selfobj,
-        method_name = "__gc",
-        internal_args = {port = port},
-        callback = Private.Server__gc
-    })
-    
-    herigitage.set_method({
-        obj = selfobj,
-        method_name = "newSession",
-        internal_args = {url = props.url, fetch = props.fetch},
-        callback = Private.Server_newSession
-    })
-    
-
     -- Start chromedriver with proper command formatting
     local command = "%s --port=%d --binary=%s &"
     command = command:format(props.chromedriver_command, props.port, props.chrome_binary)

@@ -2,12 +2,14 @@
 
 local herigitage = {}
 
-herigitage.newMetaObject = function (public,private)
-
+herigitage.newMetaObject = function (props)
+    if not props then
+        props = {}
+    end
     local selfobject = {}
-    selfobject.public = public
-    selfobject.private = private
-    selfobject.meta_table = {}
+    selfobject.public = props.public or {}
+    selfobject.private = props.private or {}
+    selfobject.meta_table = props.meta_table or {}
     setmetatable(selfobject, selfobject.meta_table)
     
     
