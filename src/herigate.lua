@@ -17,13 +17,34 @@ herigitage.newMetaObject = function (props)
         end
         setmetatable(selfobject.public, selfobject.meta_table)
     end
+    selfobject.meta_extends = function (props)
+        for k,v in pairs(props) do
+            local item = selfobject.meta_table[k]
+            if type(item) == "function" then
+                selfobject.set_meta_method(k, v)
+            else
+                selfobject.meta_table[k] = v
+            end
+        end
+        
+    end
 
-
-    
     selfobject.set_public_method = function (method_name, callback)
         selfobject.public[method_name] = function (...)
             return callback(selfobject.public,selfobject.private, ...)
         end
+    end
+
+    selfobject.public_extends = function (props)
+        for k,v in pairs(props) do
+            local item = selfobject.public[k]
+            if type(item) == "function" then
+                selfobject.set_public_method(k, v)
+            else
+                selfobject.public[k] = v
+            end
+        end
+        
     end
 
     selfobject.set_private_method = function (method_name, callback)
