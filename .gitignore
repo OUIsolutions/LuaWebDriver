@@ -2,5 +2,7 @@ luaWebDriver.lua
 darwin
 luaBear
 client.lua
+dependencies
 chrome
-teste.lua
+test.lua
+luaWebDriver.lua
