@@ -1,6 +1,9 @@
 
 PublicSession.navegate_to = function(public,private,url)
-
+   
+    if not url then 
+        error("URL is required for navigation")
+    end
     --make a requisiton to navegate_to a url
     local result = private.fetch({
         url = private.url .. "/session/" .. private.session_id .. "/url",
