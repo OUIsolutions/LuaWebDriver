@@ -12,7 +12,7 @@ PublicElement.send_keys = function(public, private, keys)
 
     -- Send the request to the WebDriver server
     local result = private.fetch({
-        url = private.url .. "/session/" .. private.session_id .. "/element/" .. public.element_id .. "/value",
+        url = private.url .. "/session/" .. private.session_id .. "/element/" .. private.element_id .. "/value",
         method = "POST",
         headers = {
             ["Content-Type"] = "application/json"
@@ -22,8 +22,8 @@ PublicElement.send_keys = function(public, private, keys)
     })
 
     -- Check for errors in the response
-    if not result or not result.is_success() then
-        error("Failed to send keys: " .. (result and result.read_body() or "Unknown error"))
+    if result.status_code  ~= 200 then
+        error("Failed to send keys: " .. (result.read_body() or "Unknown error"))
     end
 
     return true
@@ -32,14 +32,13 @@ end
 PublicElement.click = function(public, private)
     -- Send a POST request to click the element
     local result = private.fetch({
-        url = private.url .. "/session/" .. private.session_id .. "/element/" .. public.element_id .. "/click",
+        url = private.url .. "/session/" .. private.session_id .. "/element/" .. private.element_id .. "/click",
         method = "POST",
         http_version = "1.1"
     })
-
     -- Check for errors in the response
-    if not result or not result.is_success() then
-        error("Failed to click element: " .. (result and result.read_body() or "Unknown error"))
+    if result.status_code  ~= 200 then
+        error("Failed to send keys: " .. (result.read_body() or "Unknown error"))
     end
 
     return true

@@ -19,9 +19,6 @@ PublicSession.get_element = function(public,private,by, value)
         error("Failed to get element: " .. result.read_body())
     end
     local body = result.read_body_json()
-    if not body.value or not body.value.ELEMENT then
-        error("Element not found: " .. result.read_body())
-    end
     local id = body.value["element-6066-11e4-a52e-4f735466cecf"]
     return Element.newElement({
         element_id = id,
