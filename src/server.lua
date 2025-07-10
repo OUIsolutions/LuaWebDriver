@@ -25,7 +25,7 @@ WebDriver.newLocalServer = function(props)
         error("chromedriver_command is required")
     end
 
-    local selfobj = herigitage.newMetaObject()
+    local selfobj = Heregitage.newMetaObject()
     selfobj.private_extends(props)
     selfobj.private.url = "http://127.0.0.1:"..selfobj.private.port
     selfobj.set_meta_method("__gc", Server.__gc)
