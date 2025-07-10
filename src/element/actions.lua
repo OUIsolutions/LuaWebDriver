@@ -29,7 +29,8 @@ PublicElement.click = function(public, private)
     local result = private.fetch({
         url = private.url .. "/session/" .. private.session_id .. "/element/" .. private.element_id .. "/click",
         method = "POST",
-        http_version = "1.1"
+        http_version = "1.1",
+        body={}
     })
     -- Check for errors in the response
     if result.status_code  ~= 200 then
