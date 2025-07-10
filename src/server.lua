@@ -1,23 +1,15 @@
 
-
-
-Private.WebDriver_aply__gc_method = function (selfobj)
-    
-    function turnoff_chromedriver()
-        print("turning off chromedriver on port " .. selfobj.port)
-        os.execute(string.format(
-            'curl -X DELETE "http://127.0.0.1:%d/shutdown" >/dev/null 2>&1',
-            selfobj.port
-        ))
-    end    
-    setmetatable(selfobj,{__gc = turnoff_chromedriver})
+Private.Server__gc = function (selfobj,internal_args)
+    print("turning off chromedriver on port " .. internal_args.port)
+    os.execute(string.format(
+        'curl -X DELETE "http://127.0.0.1:%d/shutdown" >/dev/null 2>&1',
+        internal_args.port
+    ))
 end
 
-Private.WebDriver_aply_new_session_method = function (selfobj,props)
-    selfobj.newSession = function ()
-       return Private.newSession({url = props.url, fetch = props.fetch})
-    end
-end
+Private.Server_newSession = function(selfobj,internal_args)
+       return Private.newSession({url = internal_args.url, fetch = internal_args.fetch})
+end 
 
 WebDriver.newLocalServer = function(props)
 
@@ -29,12 +21,24 @@ WebDriver.newLocalServer = function(props)
     end
 
     local selfobj = {}
-    Private.WebDriver_aply__gc_method(selfobj)
-    Private.WebDriver_aply_new_session_method(selfobj,{
-        fetch = props.fetch,
-        url = selfobj.url
+
+    local port = props.port or 4444
+    
+    herigitage.set_meta_method({
+        obj = selfobj,
+        method_name = "__gc",
+        internal_args = {port = port},
+        callback = Private.Server__gc
     })
     
+    herigitage.set_method({
+        obj = selfobj,
+        method_name = "newSession",
+        internal_args = {url = props.url, fetch = props.fetch},
+        callback = Private.Server_newSession
+    })
+    
+
     -- Start chromedriver with proper command formatting
     local command = "%s --port=%d --binary=%s &"
     command = command:format(props.chromedriver_command, props.port, props.chrome_binary)
