@@ -5,13 +5,12 @@ local function Server__gc(public,private)
         'curl -X DELETE "http://127.0.0.1:%d/shutdown" >/dev/null 2>&1',
         private.port
     ))
-
-    
 end
 
 local function Server_newSession(public,private)
        return Private.newSession({url = private.url, fetch = private.fetch})
 end
+
 
 WebDriver.newLocalServer = function(props)
 
