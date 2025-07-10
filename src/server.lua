@@ -7,8 +7,15 @@ Server.__gc = function (public,private)
     ))
 end
 
-Server.newSession = function(public,private)
-       return Private.newSession({url = private.url, fetch = private.fetch})
+Server.newSession = function(public,private, props)
+    if not props then 
+        error("props is required")
+    end
+    if not props.binary_location then
+        error("binary_location is required")
+    end
+
+    return Private.newSession({url = private.url, fetch = private.fetch,binary_location= props.binary_location})
 end
 
 
@@ -16,9 +23,6 @@ WebDriver.newLocalServer = function(props)
 
     if not props.chromedriver_command then
         error("chromedriver_command is required")
-    end
-    if not props.chrome_binary then
-        error("chrome_binary is required")
     end
 
     local selfobj = herigitage.newMetaObject()
@@ -29,8 +33,8 @@ WebDriver.newLocalServer = function(props)
 
 
     -- Start chromedriver with proper command formatting
-    local command = "%s --port=%d --binary=%s &"
-    command = command:format(props.chromedriver_command, props.port, props.chrome_binary)
+    local command = "%s --port=%d &"
+    command = command:format(props.chromedriver_command, props.port)
     
     print("Starting chromedriver with command: " .. command)
     os.execute(command)
