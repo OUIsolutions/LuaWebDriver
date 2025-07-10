@@ -23,7 +23,7 @@ WebDriver.newLocalServer = function(props)
     local selfobj = herigitage.newMetaObject({private=props})
     selfobj.set_meta_method("__gc", Server__gc)
     selfobj.set_public_method("newSession", Server_newSession)
-    
+
     -- Start chromedriver with proper command formatting
     local command = "%s --port=%d --binary=%s &"
     command = command:format(props.chromedriver_command, props.port, props.chrome_binary)
@@ -34,5 +34,5 @@ WebDriver.newLocalServer = function(props)
     -- Wait for chromedriver to start
     os.execute("sleep 2")
     
-    return selfobj
+    return selfobj.public
 end
