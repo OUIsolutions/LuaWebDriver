@@ -12,6 +12,8 @@ local all = {
       local Server  ={};
       local Session = {};
       local PublicSession = {};
+      local Element = {};
+      local PublicElement = {};
   ]]
   }
   all[#all + 1] = "local Heregitage = (function()  "..heregitage .. " end\n)()\n"
