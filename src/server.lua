@@ -21,7 +21,7 @@ WebDriver.newLocalServer = function(props)
         error("chrome_binary is required")
     end
 
-    local selfobj = herigitage.newMetaObject({private=props})
+    local selfobj = herigitage.newMetaObject()
     selfobj.set_meta_method("__gc", Server.__gc)
     selfobj.set_public_method("newSession", Server.newSession)
 
