@@ -16,8 +16,9 @@ herigitage.newMetaObject = function (props)
             return callback(selfobject.public,selfobject.private, ...)
         end
         setmetatable(selfobject.public, selfobject.meta_table)
-
     end
+
+    
     
     selfobject.set_public_method = function (method_name, callback)
         selfobject.public[method_name] = function (...)

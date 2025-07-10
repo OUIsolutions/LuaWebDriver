@@ -2,6 +2,7 @@ local all = {
   [[return (function()    
       local Private = {};
       local WebDriver = {};
+      local Server  ={}
   ]]
     }
   local files = darwin.dtw.list_files_recursively("src",true)
