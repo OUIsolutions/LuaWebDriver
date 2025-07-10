@@ -5,6 +5,8 @@ local function Server__gc(public,private)
         'curl -X DELETE "http://127.0.0.1:%d/shutdown" >/dev/null 2>&1',
         private.port
     ))
+
+    
 end
 
 local function Server_newSession(public,private)
@@ -29,7 +31,7 @@ WebDriver.newLocalServer = function(props)
     command = command:format(props.chromedriver_command, props.port, props.chrome_binary)
     
     print("Starting chromedriver with command: " .. command)
-    os.execute(command)
+   -- os.execute(command)
     
     -- Wait for chromedriver to start
     os.execute("sleep 2")

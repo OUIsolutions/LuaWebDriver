@@ -10,8 +10,13 @@ herigitage.newMetaObject = function (props)
     selfobject.public = props.public or {}
     selfobject.private = props.private or {}
     selfobject.meta_table = props.meta_table or {}
-    setmetatable(selfobject, selfobject.meta_table)
+    setmetatable(selfobject.public, selfobject.meta_table)
     
+    selfobject.set_meta_method = function (method_name,callback)
+        selfobject.meta_table[method_name] = function (...)
+            return callback(selfobject.public,selfobject.private, ...)
+        end
+    end
     
     selfobject.set_public_method = function (method_name, callback)
         selfobject.public[method_name] = function (...)
@@ -19,11 +24,7 @@ herigitage.newMetaObject = function (props)
         end
     end
 
-    selfobject.set_meta_method = function (method_name,callback)
-        selfobject.meta_table[method_name] = function (...)
-            return callback(selfobject.public,selfobject.private, ...)
-        end
-    end
+
 
     selfobject.set_private_method = function (method_name, callback)
         selfobject.private[method_name] = function (...)
