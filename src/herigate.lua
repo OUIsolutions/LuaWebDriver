@@ -2,28 +2,37 @@
 
 local herigitage = {}
 
-herigitage.set_method = function (props)
-    props.obj[props.method_name] = function (...)
-       if props.internal_args then 
-           return props.callback(props.obj, props.internal_args, ...)
-       end
-      return props.callback(props.obj, ...)
-   end
-end
+herigitage.newMetaObject = function (public,private)
 
-herigitage.set_meta_method = function(props)
+    local selfobject = {}
+    selfobject.public = public
+    selfobject.private = private
+    selfobject.meta_table = {}
+    setmetatable(selfobject, selfobject.meta_table)
+    
+    
+    selfobject.set_public_method = function (method_name, callback)
+        selfobject.public[method_name] = function (...)
+            return callback(selfobject.public,selfobject.private, ...)
+        end
+    end
 
-    local metatable = getmetatable(props.obj)
-    if not metatable then
-        metatable = {}
-        setmetatable(props.obj, metatable)
-    end 
-    herigitage.set_method({
-        obj = metatable,
-        method_name = props.method_name,
-        internal_args = props.internal_args,
-        callback = props.callback
-    })
+    selfobject.set_metha_metod = function (method_name,callback)
+        selfobject.meta_table[method_name] = function (...)
+            return callback(selfobject.public,selfobject.private, ...)
+        end
+    end
 
-end
+    selfobject.set_private_method = function (method_name, callback)
+        selfobject.private[method_name] = function (...)
+            return callback(selfobject.public,selfobject.private, ...)
+        end
+    end
+
+    return selfobject
+end 
+
+
+
+
 

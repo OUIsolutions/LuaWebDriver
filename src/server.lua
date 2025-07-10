@@ -1,15 +1,15 @@
 
-Private.Server__gc = function (selfobj,internal_args)
-    print("turning off chromedriver on port " .. internal_args.port)
+local function Server__gc(public,private)
+    print("turning off chromedriver on port " .. private.port)
     os.execute(string.format(
         'curl -X DELETE "http://127.0.0.1:%d/shutdown" >/dev/null 2>&1',
-        internal_args.port
+        private.port
     ))
 end
 
-Private.Server_newSession = function(selfobj,internal_args)
-       return Private.newSession({url = internal_args.url, fetch = internal_args.fetch})
-end 
+local function Server_newSession(public,private)
+       return Private.newSession({url = private.url, fetch = private.fetch})
+end
 
 WebDriver.newLocalServer = function(props)
 
