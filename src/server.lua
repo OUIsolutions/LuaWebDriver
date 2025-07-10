@@ -26,7 +26,7 @@ WebDriver.newLocalServer = function(props)
     end
 
     local selfobj = Heregitage.newMetaObject()
-    selfobj.private_extends(props)
+    selfobj.private_props_extends(props)
     selfobj.private.url = "http://127.0.0.1:"..selfobj.private.port
     selfobj.set_meta_method("__gc", Server.__gc)
     selfobj.set_public_method("newSession", Server.newSession)
