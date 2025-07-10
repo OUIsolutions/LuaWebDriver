@@ -18,7 +18,7 @@ herigitage.newMetaObject = function (props)
         setmetatable(selfobject.public, selfobject.meta_table)
     end
 
-    
+
     
     selfobject.set_public_method = function (method_name, callback)
         selfobject.public[method_name] = function (...)
@@ -30,6 +30,17 @@ herigitage.newMetaObject = function (props)
         selfobject.private[method_name] = function (...)
             return callback(selfobject.public,selfobject.private, ...)
         end
+    end
+    selfobject.private_extends = function (props)
+        for k,v in pairs(props) do
+            local item = selfobject.private[k]
+            if type(item) == "function" then
+                selfobject.set_private_method(k, v)
+            else
+                selfobject.private[k] = v
+            end
+        end
+        
     end
 
     return selfobject

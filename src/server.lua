@@ -22,6 +22,7 @@ WebDriver.newLocalServer = function(props)
     end
 
     local selfobj = herigitage.newMetaObject()
+    selfobj.private_extends(props)
     selfobj.set_meta_method("__gc", Server.__gc)
     selfobj.set_public_method("newSession", Server.newSession)
 
