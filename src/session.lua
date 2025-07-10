@@ -1,7 +1,11 @@
 
 Private.newSession = function (props)
+
+    local selfobject = Heregitage.newMetaObject()
+    selfobject.private_extends(props)
+
     local result = props.fetch({
-        url = string.format(props.url .. "/session"),
+        url = props.url .. "/session",
         method = "POST",
         http_version = "1.1",
         body = {
@@ -17,6 +21,6 @@ Private.newSession = function (props)
     })
     print(result.status_code)
     print(result.read_body())
-
+    return selfobject.public
 
 end
