@@ -1,10 +1,10 @@
 
 Server.__gc = function (public,private)
     print("turning off chromedriver on port " .. private.port)
-    os.execute(string.format(
-        'curl -X DELETE "http://127.0.0.1:%d/shutdown" >/dev/null 2>&1',
-        private.port
-    ))
+    private.fetch({
+        http_version = "1.1",
+        url=string.format("http://127.0.0.1:%d/shutdown", private.port),
+    })
 end
 
 Server.newSession = function(public,private, props)
