@@ -36,3 +36,31 @@ rm chrome-linux64.zip
 
 ## Step 5 : Create a hello world 
 now , create a **main.lua** file with the following content 
+
+```bash
+local webdriver = require("luaWebDriver")
+local luabear = require("luaBear.luaBear")
+-- Setup
+local server = webdriver.newLocalServer({
+    fetch = luabear.fetch,
+    chromedriver_command = "./chrome/chromedriver-linux64/chromedriver",
+    port = 4444
+})
+
+local session = server.newSession({
+    binary_location = "./chrome/chrome-linux64/chrome",
+})
+
+-- Navigate to a news website
+session.navegate_to("https://news.ycombinator.com")
+
+local big_box = session.get_element_by_id("bigbox")
+local td = big_box[1]
+local table_1 = td[1]
+local tbody = table_1[1]
+
+for i =1 , tbody.get_children_size() do 
+    local tr = tbody.get_element_by_index(i)
+    print(tr.get_text())
+end
+```
