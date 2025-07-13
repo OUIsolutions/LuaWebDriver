@@ -17,43 +17,23 @@ PublicSession.navegate_to = function(public,private,url)
     end
 end
 
--- Get all window handles
-PublicSession.get_window_handles = function(public, private)
-    local result = private.fetch({
+
+-- Switch to a specific window by handle
+PublicSession.switch_to_window = function(public, private, index)
+    if not index or type(index) ~= "number" then
+        error("Window index is required for switching windows")
+    end
+
+    local handles_request = private.fetch({
         url = private.url .. "/session/" .. private.session_id .. "/window/handles",
         method = "GET",
         http_version = "1.1"
     })
-    
-    if result.status_code ~= 200 then
-        error("Failed to get window handles: " .. result.read_body())
+    local handles = handles_request.read_body_json().value or {}
+    if index < 1 or index > #handles then
+        error("Invalid window index: " .. index)
     end
-    
-    local body = result.read_body_json()
-    return body.value or {}
-end
-
--- Get current window handle
-PublicSession.get_current_window_handle = function(public, private)
-    local result = private.fetch({
-        url = private.url .. "/session/" .. private.session_id .. "/window",
-        method = "GET",
-        http_version = "1.1"
-    })
-    
-    if result.status_code ~= 200 then
-        error("Failed to get current window handle: " .. result.read_body())
-    end
-    
-    local body = result.read_body_json()
-    return body.value
-end
-
--- Switch to a specific window by handle
-PublicSession.switch_to_window = function(public, private, window_handle)
-    if not window_handle then
-        error("Window handle is required for switching windows")
-    end
+    local window_handle = handles[index]
     local result = private.fetch({
         url = private.url .. "/session/" .. private.session_id .. "/window",
         method = "POST",
@@ -83,9 +63,6 @@ end
 
 -- Open a new window or tab
 PublicSession.open_new_window = function(public, private)
-    -- window_type can be "tab" or "window", defaults to "tab"
-    
- 
     local result = private.fetch({
         url = private.url .. "/session/" .. private.session_id .. "/window/new",
         method = "POST",
@@ -94,11 +71,9 @@ PublicSession.open_new_window = function(public, private)
             type = "Window"
         }
     })
-    
     if result.status_code ~= 200 then
         error("Failed to create new window: " .. result.read_body())
     end
-    
 end
 
 
