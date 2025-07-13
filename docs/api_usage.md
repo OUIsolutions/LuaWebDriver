@@ -133,6 +133,85 @@ local id = session.get_session_id()
 print("Session ID:", id)
 ```
 
+### Session Convenience Methods
+
+#### `session.get_element_by_id(element_id)`
+
+![Method](https://img.shields.io/badge/Method-get__element__by__id-blue?style=flat-square)
+
+Finds an element by its ID attribute (convenience method).
+
+**Example:**
+```lua
+local loginButton = session.get_element_by_id("login-btn")
+```
+
+#### `session.get_element_by_css_selector(selector)`
+
+![Method](https://img.shields.io/badge/Method-get__element__by__css__selector-blue?style=flat-square)
+
+Finds an element using CSS selector (convenience method).
+
+**Example:**
+```lua
+local header = session.get_element_by_css_selector("h1.title")
+```
+
+#### `session.get_element_by_xpath(xpath)`
+
+![Method](https://img.shields.io/badge/Method-get__element__by__xpath-blue?style=flat-square)
+
+Finds an element using XPath expression (convenience method).
+
+**Example:**
+```lua
+local button = session.get_element_by_xpath("//button[@type='submit']")
+```
+
+#### `session.get_element_by_class_name(class_name)`
+
+![Method](https://img.shields.io/badge/Method-get__element__by__class__name-blue?style=flat-square)
+
+Finds an element by its CSS class name (convenience method).
+
+**Example:**
+```lua
+local errorMsg = session.get_element_by_class_name("error-message")
+```
+
+#### `session.get_elements_by_css_selector(selector)`
+
+![Method](https://img.shields.io/badge/Method-get__elements__by__css__selector-blue?style=flat-square)
+
+Finds multiple elements using CSS selector (convenience method).
+
+**Example:**
+```lua
+local navLinks = session.get_elements_by_css_selector("nav a")
+```
+
+#### `session.get_elements_by_xpath(xpath)`
+
+![Method](https://img.shields.io/badge/Method-get__elements__by__xpath-blue?style=flat-square)
+
+Finds multiple elements using XPath expression (convenience method).
+
+**Example:**
+```lua
+local tableRows = session.get_elements_by_xpath("//table//tr")
+```
+
+#### `session.get_elements_by_class_name(class_name)`
+
+![Method](https://img.shields.io/badge/Method-get__elements__by__class__name-blue?style=flat-square)
+
+Finds multiple elements by CSS class name (convenience method).
+
+**Example:**
+```lua
+local cards = session.get_elements_by_class_name("card")
+```
+
 ## 🎯 Element Interaction
 
 ### Finding Elements
@@ -282,27 +361,56 @@ local firstChild = container.get_element_by_index(1)
 local secondChild = container.get_element_by_index(2)
 ```
 
-#### `element.execute_script(script, ...)`
+#### `element.get_element_by_index_recursively(index)`
 
-![Method](https://img.shields.io/badge/Method-execute__script-blue?style=flat-square)
+![Method](https://img.shields.io/badge/Method-get__element__by__index__recursively-blue?style=flat-square)
 
-Executes JavaScript on an element.
+Gets any descendant element by index (1-based), searching recursively through all children.
 
 **Example:**
 ```lua
-local button = session.get_element("id", "hidden-button")
--- Scroll element into view
-button.execute_script("arguments[0].scrollIntoView(true);")
+local container = session.get_element("css selector", "div.complex")
+-- Gets the 5th element anywhere within the container
+local fifthElement = container.get_element_by_index_recursively(5)
+```
 
--- Change element style
-button.execute_script("arguments[0].style.backgroundColor = 'red';")
+#### `element.get_children_size()`
 
--- With additional arguments
-local element = session.get_element("id", "myDiv")
-element.execute_script(
-    "arguments[0].innerHTML = arguments[1];",
-    "Hello from Lua!"
-)
+![Method](https://img.shields.io/badge/Method-get__children__size-blue?style=flat-square)
+
+Returns the number of direct child elements.
+
+**Example:**
+```lua
+local list = session.get_element("css selector", "ul")
+local childCount = list.get_children_size()
+print("List has " .. childCount .. " items")
+```
+
+#### `element.get_all_children_size()`
+
+![Method](https://img.shields.io/badge/Method-get__all__children__size-blue?style=flat-square)
+
+Returns the total number of descendant elements (all children recursively).
+
+**Example:**
+```lua
+local container = session.get_element("css selector", "div.container")
+local totalElements = container.get_all_children_size()
+print("Container has " .. totalElements .. " elements in total")
+```
+
+#### `element.get_chromedriver_id()`
+
+![Method](https://img.shields.io/badge/Method-get__chromedriver__id-blue?style=flat-square)
+
+Returns the internal ChromeDriver element ID for debugging purposes.
+
+**Example:**
+```lua
+local button = session.get_element("id", "submit")
+local id = button.get_chromedriver_id()
+print("Element ID:", id)
 ```
 
 ## 🪟 Window Management
@@ -525,6 +633,3 @@ local function runAutomation()
 end
 ```
 
-## 📝 License
-
-This documentation is for the LuaWebDriver library. Please refer
