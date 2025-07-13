@@ -1,5 +1,4 @@
 
-
 Element.newElement = function (props)
     local selfobject = Heregitage.newMetaObject()
     selfobject.private_props_extends(props)
