@@ -56,6 +56,16 @@ PublicElement.get_elements = function(public, private, selector, value)
     return {}
 end
 
+PublicElement.get_element_by_index_recursively = function(public, private, index)
+    if not index or type(index) ~= "number" or index < 1 then
+        error("Index must be a positive integer")
+    end
+
+    local elements = public.get_elements("css selector", "*")
+    return elements[index]    
+end
+
+
 PublicElement.get_element_by_index = function(public, private, index)
     if not index or type(index) ~= "number" or index < 1 then
         error("Index must be a positive integer")
