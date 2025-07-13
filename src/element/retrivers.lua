@@ -35,7 +35,6 @@ end
 
 
 
-
 PublicElement.get_attribute = function(public, private, attribute_name)
     if not attribute_name or type(attribute_name) ~= "string" then
         error("Nome do atributo deve ser uma string não vazia")

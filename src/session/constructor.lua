@@ -1,6 +1,7 @@
 
 
 
+
 Session.newSession = function (props)
 
     local selfobject = Heregitage.newMetaObject()
