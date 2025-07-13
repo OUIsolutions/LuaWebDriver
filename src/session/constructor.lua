@@ -12,15 +12,15 @@ Session.newSession = function (props)
     
     if not args  then 
         args = {
-                                "--disable-blink-features=AutomationControlled",
-                                "--disable-infobars",
-                                "--disable-notifications",
-                                "--disable-popup-blocking",
-                                "--disable-extensions",
-                                "--no-sandbox",
-                                "--ignore-certificate-errors",
-                                "--window-size=1920,1080",
-                                "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36"
+            "--disable-blink-features=AutomationControlled",
+            "--disable-infobars",
+            "--disable-notifications",
+            "--disable-popup-blocking",
+            "--disable-extensions",
+            "--no-sandbox",
+            "--ignore-certificate-errors",
+            "--window-size=1920,1080",
+            "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36"
         }
     end
 
