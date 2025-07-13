@@ -24,6 +24,35 @@ PublicElement.get_element = function(public, private, selector, value)
     end
     return nil
 end
+PublicElement.get_element_by_id = function(public, private, element_id)
+    if not element_id then
+        error("element_id is required to get an element by ID")
+    end
+    return public.get_element("xpath", "//*[@id='" .. element_id .. "']")
+end
+
+PublicElement.get_element_by_css_selector = function(public, private, selector)
+    if not selector then
+        error("selector is required to get an element by CSS selector")
+    end
+    return public.get_element("css selector", selector)
+end
+
+PublicElement.get_element_by_xpath = function(public, private, xpath)
+    if not xpath then
+        error("xpath is required to get an element by XPath")
+    end
+    return public.get_element("xpath", xpath)
+end
+
+PublicElement.get_element_by_class_name = function(public, private, class_name)
+    if not class_name then
+        error("class_name is required to get an element by class name")
+    end
+    return public.get_element("class name", class_name)
+end
+
+
 
 PublicElement.get_elements = function(public, private, selector, value)
     local payload = {
@@ -55,6 +84,28 @@ PublicElement.get_elements = function(public, private, selector, value)
     end
     return {}
 end
+
+PublicElement.get_elements_by_css_selector = function(public, private, selector)
+    if not selector then
+        error("selector is required to get elements by CSS selector")
+    end
+    return public.get_elements("css selector", selector)
+end
+
+PublicElement.get_elements_by_xpath = function(public, private, xpath)
+    if not xpath then
+        error("xpath is required to get elements by XPath")
+    end
+    return public.get_elements("xpath", xpath)
+end
+
+PublicElement.get_elements_by_class_name = function(public, private, class_name)
+    if not class_name then
+        error("class_name is required to get elements by class name")
+    end
+    return public.get_elements("class name", class_name)
+end
+
 
 PublicElement.get_element_by_index_recursively = function(public, private, index)
     if not index or type(index) ~= "number" or index < 1 then
