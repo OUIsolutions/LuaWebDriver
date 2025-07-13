@@ -415,15 +415,14 @@ local session = server.newSession({
 -- Navigate to a news website
 session.navegate_to("https://news.ycombinator.com")
 
--- Get all article links
-local articles = session.get_elements("css selector", "a.storylink")
+local big_box = session.get_element_by_id("bigbox")
+local td = big_box[1]
+local table_1 = td[1]
+local tbody = table_1[1]
 
--- Extract data
-for i = 1, math.min(10, #articles) do
-    local article = articles[i]
-    local title = article.get_text()
-    local url = article.get_attribute("href")
-    print(string.format("%d. %s\n   URL: %s", i, title, url))
+for i =1 , tbody.get_children_size() do 
+    local tr = tbody.get_element_by_index(i)
+    print(tr.get_text())
 end
 ```
 
