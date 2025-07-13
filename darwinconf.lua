@@ -6,16 +6,9 @@ end
 local heregitage = darwin.dtw.load_file("dependencies/herigitage.lua")
 
 local all = {
-  [[return (function()    
-      local Private = {};
-      local WebDriver = {};
-      local Server  ={};
-      local Session = {};
-      local PublicSession = {};
-      local Element = {};
-      local PublicElement = {};
-  ]]
+  [[return (function()]]
   }
+  all[#all + 1] = darwin.dtw.load_file("objects.lua") .. "\n"
   all[#all + 1] = "local Heregitage = (function()  "..heregitage .. " end\n)()\n"
 
   local files = darwin.dtw.list_files_recursively("src",true)
