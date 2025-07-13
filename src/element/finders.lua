@@ -76,3 +76,14 @@ PublicElement.get_element_by_index = function(public, private, index)
     return elements[index]
     
 end
+
+PublicElement.get_children_size = function(public, private)
+    local elements = public.get_elements("xpath", "./child::*")
+    return #elements
+end
+
+
+PublicElement.get_all_children_size = function(public, private)
+    local elements = public.get_elements("css selector", "*")
+    return #elements
+end
