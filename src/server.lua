@@ -48,3 +48,21 @@ WebDriver.newLocalServer = function(props)
     
     return selfobj.public
 end
+
+WebDriver.newRemoteServer = function(props)
+    if not props.url then
+        error("url is required")
+    end
+
+    if not props.fetch then
+        error("fetch is required")
+    end
+
+    local selfobj = Heregitage.newMetaObject()
+    selfobj.private_props_extends(props)
+    selfobj.private.url = props.url
+    selfobj.set_meta_method("__gc", Server.__gc)
+    selfobj.set_public_method("newSession", Server.newSession)
+
+    return selfobj.public
+end
