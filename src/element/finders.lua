@@ -61,8 +61,8 @@ PublicElement.get_element_by_index = function(public, private, index)
         error("Index must be a positive integer")
     end
     
-
-    local elements = public.get_elements("css selector", "*")
+    -- Get only direct children (siblings at the same level)
+    local elements = public.get_elements("xpath", "./child::*")
     return elements[index]
     
 end
