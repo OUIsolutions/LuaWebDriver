@@ -59,7 +59,7 @@ PublicSession.get_elements = function(public,private,by, value)
                 session_id = private.session_id,
                 fetch = private.fetch
             })
-            table.insert(elements, element)
+            elements[#elements + 1] = element
         end
     end
     

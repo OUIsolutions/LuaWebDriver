@@ -44,11 +44,10 @@ PublicElement.get_elements = function(public, private, selector, value)
                 local element = Element.newElement({
                     element_id = element_data["element-6066-11e4-a52e-4f735466cecf"],
                     session_id = private.session_id,
-                    http_version = "1.1",
                     url = private.url,
                     fetch = private.fetch
                 })
-                table.insert(elements, element)
+                elements[#elements + 1] = element
             end
             return elements
         end
