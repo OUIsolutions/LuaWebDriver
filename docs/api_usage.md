@@ -238,7 +238,7 @@ local button = session.get_element("css selector", "#submit-button")
 local heading = session.get_element("xpath", "//h1[@class='title']")
 
 -- Find by ID
-local input = session.get_element("id", "username")
+local input = session.get_element_by_id( "username")
 ```
 
 #### `session.get_elements(selector_type, value)`
@@ -279,7 +279,7 @@ Types text into an input element.
 
 **Example:**
 ```lua
-local searchBox = session.get_element("id", "search")
+local searchBox = session.get_element_by_id( "search")
 searchBox.send_keys("Lua programming")
 ```
 
@@ -332,7 +332,7 @@ Finds a child element within another element.
 
 **Example:**
 ```lua
-local form = session.get_element("id", "login-form")
+local form = session.get_element_by_id( "login-form")
 local username = form.get_element("css selector", "input[name='username']")
 ```
 
@@ -408,7 +408,7 @@ Returns the internal ChromeDriver element ID for debugging purposes.
 
 **Example:**
 ```lua
-local button = session.get_element("id", "submit")
+local button = session.get_element_by_id( "submit")
 local id = button.get_chromedriver_id()
 print("Element ID:", id)
 ```
@@ -488,10 +488,10 @@ local session = server.newSession({
 session.navegate_to("https://example.com/login")
 
 -- Fill login form
-local username = session.get_element("id", "username")
+local username = session.get_element_by_id( "username")
 username.send_keys("myusername")
 
-local password = session.get_element("id", "password")
+local password = session.get_element_by_id( "password")
 password.send_keys("mypassword")
 
 -- Submit form
@@ -586,7 +586,7 @@ end
 ### 1. **Always Handle Errors**
 ```lua
 local success, element = pcall(function()
-    return session.get_element("id", "may-not-exist")
+    return session.get_element_by_id( "may-not-exist")
 end)
 
 if success then
