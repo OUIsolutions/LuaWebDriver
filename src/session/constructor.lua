@@ -5,7 +5,7 @@ Session.newSession = function (props)
 
     local selfobject = Heregitage.newMetaObject()
     selfobject.private_props_extends(props)
-    selfobject.set_meta_method("__gc", Session.__gc)
+    selfobject.meta_method_extends(MetaSession)
     selfobject.public_method_extends(PublicSession)
     local args = props.args 
     

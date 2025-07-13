@@ -1,4 +1,4 @@
-Session.__gc = function (public, private)
+MetaSession.__gc = function (public, private)
     print("Closing session with ID: " .. private.session_id)
     
     -- First, close the WebDriver session
