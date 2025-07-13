@@ -71,20 +71,31 @@ local server = webdriver.newLocalServer({
     port = 4444
 })
 
--- Create browser session
+-- Create a new browser session
 local session = server.newSession({
-    binary_location = "./chrome/chrome-linux64/chrome"
+    binary_location = "./chrome/chrome-linux64/chrome",
 })
 
--- Navigate and interact
-session.navegate_to("https://google.com")
-local searchBox = session.get_element("css selector", "input[name='q']")
-searchBox.send_keys("Lua programming")
+-- Navigate to a website
+session.navegate_to("https://news.ycombinator.com")
 
-local searchButton = session.get_element("css selector", "input[type='submit']")
-searchButton.click()
+-- Find and interact with elements
+local big_box = session.get_element_by_id("bigbox")
+local td = big_box[1]
+local table_1 = td[1] 
+local tbody = table_1[1]
 
-print("Search completed! 🎉")
+-- Print all news items
+print("=== Hacker News Articles ===")
+for i = 1, tbody.get_children_size() do 
+    local tr = tbody.get_element_by_index(i)
+    local text = tr.get_text()
+    if text and text ~= "" then
+        print(i .. ". " .. text)
+    end
+end
+
+print("✅ Test completed successfully!")
 ```
 
 ### 3. Run Your Script
