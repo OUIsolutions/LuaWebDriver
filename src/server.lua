@@ -24,6 +24,10 @@ WebDriver.newLocalServer = function(props)
     if not props.chromedriver_command then
         error("chromedriver_command is required")
     end
+    
+    if not props.fetch then
+        error("fetch is required")
+    end
 
     local selfobj = Heregitage.newMetaObject()
     selfobj.private_props_extends(props)

@@ -44,6 +44,7 @@ PublicElement.get_elements = function(public, private, selector, value)
                 local element = Element.newElement({
                     element_id = element_data["element-6066-11e4-a52e-4f735466cecf"],
                     session_id = private.session_id,
+                    http_version = "1.1",
                     url = private.url,
                     fetch = private.fetch
                 })
@@ -60,10 +61,8 @@ PublicElement.get_by_index = function(public, private, index)
         error("Index must be a positive integer")
     end
     
-    selector = selector or "css selector"
-    value = value or "*"
-    
-    local elements = public.get_elements(selector, value)
+
+    local elements = public.get_elements("css selector", "*")
     
     if elements and #elements >= index then
         return elements[index]
