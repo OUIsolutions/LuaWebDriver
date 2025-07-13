@@ -32,6 +32,7 @@ PublicElement.get_elements = function(public, private, selector, value)
     }
     local response = private.fetch({
         method = "POST",
+        http_version="1.1",
         url = private.url .. "/session/" .. private.session_id .. "/element/" .. private.element_id .. "/elements",
         body = payload
     })
