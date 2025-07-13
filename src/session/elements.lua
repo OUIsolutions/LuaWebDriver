@@ -48,6 +48,21 @@ PublicSession.get_elements = function(public,private,by, value)
         error("Failed to get elements: " .. result.read_body())
     end
     
-    return result.read_body_json().value
+    local body = result.read_body_json()
+    local elements = {}
+    
+    if body.value and #body.value > 0 then
+        for _, element_data in ipairs(body.value) do
+            local element = Element.newElement({
+                element_id = element_data["element-6066-11e4-a52e-4f735466cecf"],
+                url = private.url,
+                session_id = private.session_id,
+                fetch = private.fetch
+            })
+            table.insert(elements, element)
+        end
+    end
+    
+    return elements
 end
 
