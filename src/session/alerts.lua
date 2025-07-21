@@ -1,10 +1,14 @@
--- Aceita o alerta (clica em "OK")
-PublicSession.accept_alert = function(public, private)
+PublicSession.accept_alert = function(_, private)
     local result = private.fetch({
         url = private.url .. "/session/" .. private.session_id .. "/alert/accept",
         method = "POST",
-        http_version = "1.1"
+        http_version = "1.1",
+        headers = {
+            ["Content-Type"] = "application/json"
+        },
+        body = {}
     })
+    
     if result.status_code ~= 200 then
         error("Failed to accept alert: " .. result.read_body())
     end
@@ -15,7 +19,11 @@ PublicSession.dismiss_alert = function(public, private)
     local result = private.fetch({
         url = private.url .. "/session/" .. private.session_id .. "/alert/dismiss",
         method = "POST",
-        http_version = "1.1"
+        http_version = "1.1",
+        headers = {
+            ["Content-Type"] = "application/json"
+        },
+        body = {}
     })
     if result.status_code ~= 200 then
         error("Failed to dismiss alert: " .. result.read_body())
@@ -27,7 +35,11 @@ PublicSession.get_alert_text = function(public, private)
     local result = private.fetch({
         url = private.url .. "/session/" .. private.session_id .. "/alert/text",
         method = "GET",
-        http_version = "1.1"
+        http_version = "1.1",
+        headers = {
+            ["Content-Type"] = "application/json"
+        },
+        body = {}
     })
     if result.status_code ~= 200 then
         error("Failed to get alert text: " .. result.read_body())
