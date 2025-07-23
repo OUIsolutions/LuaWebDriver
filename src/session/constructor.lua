@@ -2,9 +2,10 @@
 
 
 
-Session.newSession = function (props)
+Session.newSession = function (private_server_props,props)
 
     local selfobject = Heregitage.newMetaObject()
+    selfobject.private_props_extends(private_server_props)
     selfobject.private_props_extends(props)
     selfobject.meta_method_extends(MetaSession)
     selfobject.public_method_extends(PublicSession)
@@ -27,8 +28,8 @@ Session.newSession = function (props)
 
     local use_automation_extension = props.use_automation_extension or false
 
-    local result = props.fetch({
-        url=props.url.."/session",
+    local result = selfobject.private.fetch({
+        url=selfobject.private.url.."/session",
         method = "POST",
         http_version = "1.1",
         body = {

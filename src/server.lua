@@ -1,10 +1,12 @@
 
 Server.__gc = function (public,private)
     print("turning off chromedriver on port " .. private.port)
+    
     private.fetch({
         http_version = "1.1",
         url=string.format("http://127.0.0.1:%d/shutdown", private.port),
     })
+    
 end
 
 Server.newSession = function(public,private, props)
@@ -15,7 +17,9 @@ Server.newSession = function(public,private, props)
         error("binary_location is required")
     end
 
-    return Session.newSession({url = private.url, fetch = private.fetch,binary_location= props.binary_location,args=props.args})
+    local created =  Session.newSession(private,{binary_location= props.binary_location,args=props.args})
+    created.server = public
+    return created
 end
 
 

@@ -56,9 +56,7 @@ PublicElement.get_attribute = function(public, private, attribute_name)
 end
 
 
-
-
-PublicElement.execute_script = function(public, private, script, ...)
+PublicElement.get_requisition_props = function(public, private, script, ...)
     if not script or type(script) ~= "string" then
         error("Script should be a non-empty string")
     end
@@ -68,7 +66,7 @@ PublicElement.execute_script = function(public, private, script, ...)
     -- Insert the element reference as the first argument (arguments[0] in JavaScript)
     local element_ref = {["element-6066-11e4-a52e-4f735466cecf"] = private.element_id}
     table.insert(args, 1, element_ref)
-    local requisition_props = {
+    return  {
         method = "POST",
         http_version = "1.1",
         url = private.url .. "/session/" .. private.session_id .. "/execute/sync",
@@ -77,6 +75,10 @@ PublicElement.execute_script = function(public, private, script, ...)
             args = args
         }
     }
+end 
+
+PublicElement.execute_script = function(public, private, script, ...)
+    local requisition_props = public.get_requisition_props(script, ...)
     local response = private.fetch(requisition_props)
           
     if response.status_code == 200 then
