@@ -39,6 +39,9 @@ Session.newSession = function (private_server_props,props)
                     ["goog:chromeOptions"] = {
                         binary = props.binary_location,
                         args =args,
+                        prefs={
+                            ["download.default_directory"]= props.download_directory
+                        },
                         excludeSwitches = {"enable-automation"},
                         useAutomationExtension = use_automation_extension
                     }
