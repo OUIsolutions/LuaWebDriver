@@ -11,6 +11,7 @@
 - [Server Management](#server-management)
 - [Session Management](#session-management)
 - [Element Interaction](#element-interaction)
+- [Alert Handling](#alert-handling)
 - [Window Management](#window-management)
 - [Complete Examples](#complete-examples)
 
@@ -98,11 +99,13 @@ Creates a new browser session.
 | `binary_location` | string | ✅ | Path to Chrome executable |
 | `args` | table | ❌ | Chrome command line arguments |
 | `use_automation_extension` | boolean | ❌ | Use automation extension (default: false) |
+| `download_directory` | string | ❌ | Directory for downloads |
 
 **Example:**
 ```lua
 local session = server.newSession({
     binary_location = "/usr/bin/google-chrome",
+    download_directory = "/home/user/downloads",
     args = {
         "--headless",
         "--window-size=1920,1080"
@@ -408,9 +411,119 @@ Returns the internal ChromeDriver element ID for debugging purposes.
 
 **Example:**
 ```lua
-local button = session.get_element_by_id( "submit")
+local button = session.get_element_by_id("submit")
 local id = button.get_chromedriver_id()
 print("Element ID:", id)
+```
+
+#### `element.get_requisition_props(script, ...)`
+
+![Method](https://img.shields.io/badge/Method-get__requisition__props-blue?style=flat-square)
+
+Prepares request properties for executing JavaScript on an element.
+
+**Parameters:**
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `script` | string | ✅ | JavaScript code to execute |
+| `...` | any | ❌ | Additional arguments to pass to the script |
+
+**Example:**
+```lua
+local button = session.get_element_by_id("submit")
+local props = button.get_requisition_props("return arguments[0].innerText;")
+```
+
+#### `element.execute_script(script, ...)`
+
+![Method](https://img.shields.io/badge/Method-execute__script-blue?style=flat-square)
+
+Executes JavaScript code on an element and returns the result.
+
+**Parameters:**
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `script` | string | ✅ | JavaScript code to execute |
+| `...` | any | ❌ | Additional arguments to pass to the script |
+
+**Example:**
+```lua
+local button = session.get_element_by_id("submit")
+-- Get element's inner text using JavaScript
+local text = button.execute_script("return arguments[0].innerText;")
+print("Button text:", text)
+
+-- Scroll element into view
+button.execute_script("arguments[0].scrollIntoView();")
+
+-- Change element's style
+button.execute_script("arguments[0].style.backgroundColor = arguments[1];", "red")
+```
+
+## 🚨 Alert Handling
+
+### `session.accept_alert()`
+
+![Method](https://img.shields.io/badge/Method-accept__alert-blue?style=flat-square)
+
+Accepts a JavaScript alert, confirm, or prompt dialog (clicks "OK").
+
+**Example:**
+```lua
+-- Trigger an alert
+session.navegate_to("data:text/html,<script>alert('Hello!');</script>")
+-- Accept the alert
+session.accept_alert()
+```
+
+### `session.dismiss_alert()`
+
+![Method](https://img.shields.io/badge/Method-dismiss__alert-blue?style=flat-square)
+
+Dismisses a JavaScript alert, confirm, or prompt dialog (clicks "Cancel").
+
+**Example:**
+```lua
+-- Trigger a confirmation dialog
+session.navegate_to("data:text/html,<script>confirm('Are you sure?');</script>")
+-- Dismiss the alert
+session.dismiss_alert()
+```
+
+### `session.get_alert_text()`
+
+![Method](https://img.shields.io/badge/Method-get__alert__text-blue?style=flat-square)
+
+Gets the text content of a JavaScript alert, confirm, or prompt dialog.
+
+**Example:**
+```lua
+-- Trigger an alert with text
+session.navegate_to("data:text/html,<script>alert('Important message!');</script>")
+-- Get the alert text
+local alertText = session.get_alert_text()
+print("Alert says:", alertText)
+session.accept_alert()
+```
+
+### `session.send_alert_text(text)`
+
+![Method](https://img.shields.io/badge/Method-send__alert__text-blue?style=flat-square)
+
+Sends text to a JavaScript prompt dialog.
+
+**Parameters:**
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `text` | string | ✅ | Text to enter in the prompt |
+
+**Example:**
+```lua
+-- Trigger a prompt dialog
+session.navegate_to("data:text/html,<script>prompt('Enter your name:');</script>")
+-- Send text to the prompt
+session.send_alert_text("John Doe")
+session.accept_alert()
 ```
 
 ## 🪟 Window Management
@@ -464,6 +577,53 @@ Closes the current window/tab.
 **Example:**
 ```lua
 session.close_window()
+```
+
+### `session.get_window_count()`
+
+![Method](https://img.shields.io/badge/Method-get__window__count-blue?style=flat-square)
+
+Returns the number of open windows/tabs in the current session.
+
+**Example:**
+```lua
+local windowCount = session.get_window_count()
+print("Number of open windows:", windowCount)
+```
+
+### `session.get_current_url()`
+
+![Method](https://img.shields.io/badge/Method-get__current__url-blue?style=flat-square)
+
+Returns the URL of the current window/tab.
+
+**Example:**
+```lua
+session.navegate_to("https://example.com")
+local currentUrl = session.get_current_url()
+print("Current URL:", currentUrl)
+```
+
+### `session.switch_to_frame(element_frame)`
+
+![Method](https://img.shields.io/badge/Method-switch__to__frame-blue?style=flat-square)
+
+Switches the WebDriver context to a specific iframe element.
+
+**Parameters:**
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `element_frame` | element | ✅ | The iframe element to switch to |
+
+**Example:**
+```lua
+-- Find an iframe element
+local iframe = session.get_element("css selector", "iframe#myframe")
+-- Switch to the iframe
+session.switch_to_frame(iframe)
+-- Now you can interact with elements inside the iframe
+local insideElement = session.get_element_by_id("inside-iframe")
+insideElement.click()
 ```
 
 ## 📚 Complete Examples
@@ -534,7 +694,7 @@ for i =1 , tbody.get_children_size() do
 end
 ```
 
-### Example 3: Multi-Tab Navigation
+### Example 4: Alert Handling
 
 ```lua
 local webdriver = require("luaWebDriver")
@@ -550,35 +710,144 @@ local session = server.newSession({
     binary_location = "./chrome/chrome"
 })
 
--- Open multiple tabs with different sites
-local sites = {
-    "https://google.com",
-    "https://github.com",
-    "https://stackoverflow.com"
-}
+-- Navigate to a page with alerts
+session.navegate_to("data:text/html,<html><body>" ..
+    "<button onclick=\"alert('Simple alert!')\">Show Alert</button>" ..
+    "<button onclick=\"confirm('Are you sure?')\">Show Confirm</button>" ..
+    "<button onclick=\"prompt('Enter your name:')\">Show Prompt</button>" ..
+    "</body></html>")
 
--- Open first site
-session.navegate_to(sites[1])
+-- Test simple alert
+local alertBtn = session.get_element("css selector", "button:nth-child(1)")
+alertBtn.click()
+local alertText = session.get_alert_text()
+print("Alert text:", alertText) -- "Simple alert!"
+session.accept_alert()
 
--- Open remaining sites in new tabs
-for i = 2, #sites do
-    session.open_new_tab()
-    session.switch_to_window(i)
-    session.navegate_to(sites[i])
-end
+-- Test confirm dialog
+local confirmBtn = session.get_element("css selector", "button:nth-child(2)")
+confirmBtn.click()
+local confirmText = session.get_alert_text()
+print("Confirm text:", confirmText) -- "Are you sure?"
+session.dismiss_alert() -- Click "Cancel"
 
--- Switch between tabs and get titles
-for i = 1, #sites do
-    session.switch_to_window(i)
-    local title = session.get_element("css selector", "title").get_attribute("innerText")
-    print("Tab " .. i .. ": " .. title)
-end
+-- Test prompt dialog
+local promptBtn = session.get_element("css selector", "button:nth-child(3)")
+promptBtn.click()
+local promptText = session.get_alert_text()
+print("Prompt text:", promptText) -- "Enter your name:"
+session.send_alert_text("John Doe")
+session.accept_alert() -- Click "OK"
+```
 
--- Close all tabs except the first
-for i = #sites, 2, -1 do
-    session.switch_to_window(i)
-    session.close_window()
-end
+### Example 5: JavaScript Execution on Elements
+
+```lua
+local webdriver = require("luaWebDriver")
+
+-- Setup
+local server = webdriver.newLocalServer({
+    fetch = luabear.fetch,
+    chromedriver_command = "./chromedriver",
+    port = 4444
+})
+
+local session = server.newSession({
+    binary_location = "./chrome/chrome"
+})
+
+-- Navigate to a test page
+session.navegate_to("https://example.com")
+
+-- Get an element and execute JavaScript on it
+local heading = session.get_element("css selector", "h1")
+
+-- Get element properties using JavaScript
+local innerText = heading.execute_script("return arguments[0].innerText;")
+local tagName = heading.execute_script("return arguments[0].tagName;")
+local rect = heading.execute_script("return arguments[0].getBoundingClientRect();")
+
+print("Element text:", innerText)
+print("Tag name:", tagName)
+print("Element position:", rect.x, rect.y)
+
+-- Modify element using JavaScript
+heading.execute_script("arguments[0].style.backgroundColor = 'yellow';")
+heading.execute_script("arguments[0].style.fontSize = '24px';")
+
+-- Scroll element into view
+heading.execute_script("arguments[0].scrollIntoView({behavior: 'smooth'});")
+
+-- Execute script with multiple arguments
+local newText = "Modified by JavaScript"
+local newColor = "red"
+heading.execute_script(
+    "arguments[0].innerText = arguments[1]; arguments[0].style.color = arguments[2];",
+    newText,
+    newColor
+)
+```
+
+### Example 6: Frame and Window Management
+
+```lua
+local webdriver = require("luaWebDriver")
+
+-- Setup
+local server = webdriver.newLocalServer({
+    fetch = luabear.fetch,
+    chromedriver_command = "./chromedriver",
+    port = 4444
+})
+
+local session = server.newSession({
+    binary_location = "./chrome/chrome"
+})
+
+-- Test page with iframe
+session.navegate_to("data:text/html,<html><body>" ..
+    "<h1>Main Page</h1>" ..
+    "<iframe id='testframe' src='data:text/html,<h2>Inside Frame</h2><button id=\"frame-btn\">Frame Button</button>'>" ..
+    "</iframe>" ..
+    "</body></html>")
+
+-- Work with main page
+local mainHeading = session.get_element("css selector", "h1")
+print("Main page heading:", mainHeading.get_text())
+
+-- Switch to iframe
+local iframe = session.get_element_by_id("testframe")
+session.switch_to_frame(iframe)
+
+-- Now work inside the frame
+local frameHeading = session.get_element("css selector", "h2")
+print("Frame heading:", frameHeading.get_text())
+
+local frameButton = session.get_element_by_id("frame-btn")
+frameButton.click()
+
+-- Check window count and URLs
+print("Number of windows:", session.get_window_count())
+print("Current URL:", session.get_current_url())
+
+-- Open new tabs and switch between them
+session.open_new_tab()
+session.switch_to_window(2)
+session.navegate_to("https://google.com")
+
+session.open_new_tab()
+session.switch_to_window(3)
+session.navegate_to("https://github.com")
+
+-- Switch back to first window
+session.switch_to_window(1)
+print("Back to first window:", session.get_current_url())
+
+-- Close tabs
+session.switch_to_window(3)
+session.close_window()
+session.switch_to_window(2)
+session.close_window()
 ```
 
 ## 🔧 Tips and Best Practices
@@ -631,5 +900,46 @@ local function runAutomation()
     -- Manual cleanup (optional, happens automatically)
     collectgarbage()
 end
+```
+
+### 4. **Handle Alerts Safely**
+```lua
+local function handleAlerts(session)
+    local success, alertText = pcall(function()
+        return session.get_alert_text()
+    end)
+    
+    if success then
+        print("Alert detected:", alertText)
+        session.accept_alert()
+        return true
+    end
+    return false
+end
+
+-- Use it before performing actions that might trigger alerts
+handleAlerts(session)
+button.click()
+handleAlerts(session)
+```
+
+### 5. **Use JavaScript Execution for Complex Operations**
+```lua
+-- Instead of multiple WebDriver calls, use JavaScript for complex operations
+local element = session.get_element_by_id("complex-element")
+
+-- Multiple property access in one call
+local elementInfo = element.execute_script([[
+    return {
+        text: arguments[0].innerText,
+        visible: arguments[0].offsetParent !== null,
+        rect: arguments[0].getBoundingClientRect(),
+        style: window.getComputedStyle(arguments[0])
+    };
+]])
+
+print("Element text:", elementInfo.text)
+print("Is visible:", elementInfo.visible)
+print("Width:", elementInfo.rect.width)
 ```
 
