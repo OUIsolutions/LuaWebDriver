@@ -1,6 +1,24 @@
 PublicSession.get_session_id = function(public, private)
     return private.session_id
 end
+PublicSession.close = function (public, private)
+    if private.closed then 
+        return
+    end
+
+    print("Closing session with ID: " .. private.session_id)
+    
+    -- First, close the WebDriver session
+    local result = private.fetch({
+        url = private.url .. "/session/" .. private.session_id,
+        method = "DELETE",
+        http_version = "1.1"
+    })
+    if result.status_code ~= 200 then
+        print("Failed to close session: " .. result.read_body())
+    end
+    private.closed = true
+end
 
 -- Retorna a quantidade de abas (janelas) abertas na sessão
 PublicSession.get_window_count = function(public, private)
