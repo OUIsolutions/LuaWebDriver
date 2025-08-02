@@ -1,12 +1,19 @@
-
-Server.__gc = function (public,private)
+Server.close = function(public,private)
+    if private.closed then 
+        return
+    end
     print("turning off chromedriver on port " .. private.port)
     
     private.fetch({
         http_version = "1.1",
         url=string.format("http://127.0.0.1:%d/shutdown", private.port),
     })
-    
+    private.closed = true
+end
+
+
+Server.__gc = function (public,private)
+    public.close()
 end
 
 Server.newSession = function(public,private, props)
@@ -37,6 +44,7 @@ WebDriver.newLocalServer = function(props)
     selfobj.private_props_extends(props)
     selfobj.private.url = "http://127.0.0.1:"..selfobj.private.port
     selfobj.set_meta_method("__gc", Server.__gc)
+    selfobj.set_meta_method("close", Server.close)
     selfobj.set_public_method("newSession", Server.newSession)
 
 
