@@ -62,3 +62,24 @@ PublicSession.switch_to_frame = function(public, private, element_frame)
     return true
 end
 
+-- Troca para um frame específico usando um elemento frame
+PublicSession.go_back_to_original_frame = function(public, private)
+       
+    local result = private.fetch({
+        url = private.url .. "/session/" .. private.session_id .. "/frame",
+        method = "POST",
+        http_version = "1.1",
+        body = {
+            id = {
+                ["element-6066-11e4-a52e-4f735466cecf"] = "nil"
+            }
+        }
+    })
+    
+    if result.status_code ~= 200 then
+        error("Failed to switch to frame: " .. result.read_body())
+    end
+    
+    return true
+end
+
