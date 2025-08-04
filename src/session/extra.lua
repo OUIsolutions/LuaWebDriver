@@ -84,14 +84,9 @@ end
 PublicSession.go_back_to_original_frame = function(public, private)
        
     local result = private.fetch({
-        url = private.url .. "/session/" .. private.session_id .. "/frame",
+        url = private.url .. "/session/" .. private.session_id .. "/frame/parent",
         method = "POST",
-        http_version = "1.1",
-        body = {
-            id = {
-                ["element-6066-11e4-a52e-4f735466cecf"] = "nil"
-            }
-        }
+        http_version = "1.1"
     })
     
     if result.status_code ~= 200 then
