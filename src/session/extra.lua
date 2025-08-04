@@ -61,7 +61,7 @@ PublicSession.switch_to_frame = function(public, private, element_frame)
     end
     
     local frame_id = element_frame.get_chromedriver_id()
-    
+
     local result = private.fetch({
         url = private.url .. "/session/" .. private.session_id .. "/frame",
         method = "POST",
