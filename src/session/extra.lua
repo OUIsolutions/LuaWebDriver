@@ -5,9 +5,7 @@ PublicSession.close = function (public, private)
     if private.closed then 
         return
     end
-
     print("Closing session with ID: " .. private.session_id)
-    
     -- First, close the WebDriver session
     local result = private.fetch({
         url = private.url .. "/session/" .. private.session_id,
