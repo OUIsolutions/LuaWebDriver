@@ -81,12 +81,13 @@ PublicSession.switch_to_frame = function(public, private, element_frame)
 end
 
 -- Troca para um frame específico usando um elemento frame
-PublicSession.go_back_to_original_frame = function(public, private)
+PublicSession.go_back_to_original_frame = function(_, private)
        
     local result = private.fetch({
         url = private.url .. "/session/" .. private.session_id .. "/frame/parent",
         method = "POST",
-        http_version = "1.1"
+        http_version = "1.1",
+        body = {}
     })
     
     if result.status_code ~= 200 then
