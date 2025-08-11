@@ -11,20 +11,21 @@ Session.newSession = function (private_server_props,props)
     selfobject.public_method_extends(PublicSession)
     local args = props.args 
     
-    
-    if not args  then 
-        args = {
-            "--disable-blink-features=AutomationControlled",
-            "--disable-infobars",
-            "--disable-notifications",
-            "--disable-popup-blocking",
-            "--disable-extensions",
-            "--no-sandbox",
-            "--ignore-certificate-errors",
-            "--window-size=1920,1080",
-            "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36"
-        }
-    end
+        
+    local temp_dir = "/home/chromeuser/temp_chrome_" .. os.time()
+    args = {
+        "--disable-blink-features=AutomationControlled",
+        "--disable-infobars",
+        "--disable-notifications",
+        "--disable-popup-blocking",
+        "--disable-extensions",
+        "--no-sandbox",
+        "--ignore-certificate-errors",
+        "--window-size=1920,1080",
+        "--user-data-dir=" .. temp_dir,
+        "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36"
+    }
+
 
     local use_automation_extension = props.use_automation_extension or false
 
@@ -50,6 +51,7 @@ Session.newSession = function (private_server_props,props)
         }
     })
     local body = result.read_body_json()
+    print(json.dumps_to_string(body))
     selfobject.private.session_id = body.value.sessionId
     return selfobject.public
 
