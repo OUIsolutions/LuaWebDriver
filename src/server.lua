@@ -39,22 +39,42 @@ WebDriver.newLocalServer = function(props)
     if not props.fetch then
         error("fetch is required")
     end
-
     local selfobj = Heregitage.newMetaObject()
     selfobj.private_props_extends(props)
-    selfobj.private.url = "http://127.0.0.1:"..selfobj.private.port
     selfobj.set_meta_method("__gc", Server.__gc)
     selfobj.set_meta_method("close", Server.close)
     selfobj.set_public_method("newSession", Server.newSession)
-
-
-    -- Start chromedriver with proper command formatting
-    local command = "%s --port=%d &"
-    command = command:format(props.chromedriver_command, props.port)
     
-    print("Starting chromedriver with command: " .. command)
-    os.execute(command)
-    
+    if props.port then 
+        selfobj.private.url = "http://127.0.0.1:"..selfobj.private.port
+        local command = "%s --port=%d &"
+        command = command:format(props.chromedriver_command, props.port)
+        print("Starting chromedriver with command: " .. command)
+        local ok = os.execute(command)
+        if ok then
+            error("Failed to start chromedriver with command: " .. command)
+        end    
+    else
+        local started = false
+        for i = 4444, 65535 do
+            selfobj.private.port = i
+            selfobj.private.url = "http://127.0.0.1:"..selfobj.private.port
+
+            -- Start chromedriver with proper command formatting
+            local command = "%s --port=%d &"
+            command = command:format(props.chromedriver_command, selfobj.private.port)
+            print("Starting chromedriver with command: " .. command)
+            local ok = os.execute(command)
+            if ok then
+                started = true
+                break
+            end
+        end
+        if not started then
+            error("Failed to start chromedriver on any port between 4444 and 65535")
+        end
+    end
+
     -- Wait for chromedriver to start
     os.execute("sleep 2")
     
