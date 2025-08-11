@@ -31,7 +31,7 @@ end
 
 
 WebDriver.newLocalServer = function(props)
-
+    print("iniciou o server")
     if not props.chromedriver_command then
         error("chromedriver_command is required")
     end
@@ -46,6 +46,7 @@ WebDriver.newLocalServer = function(props)
     selfobj.set_public_method("newSession", Server.newSession)
     
     if props.port then 
+        
         selfobj.private.url = "http://127.0.0.1:"..selfobj.private.port
         local command = "%s --port=%d &"
         command = command:format(props.chromedriver_command, props.port)
