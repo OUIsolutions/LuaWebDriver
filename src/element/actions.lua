@@ -1,4 +1,3 @@
-
 PublicElement.send_keys = function(public, private, keys)
     -- Check if the keys parameter is a string
     if type(keys) ~= "string" then
@@ -19,6 +18,23 @@ PublicElement.send_keys = function(public, private, keys)
     -- Check for errors in the response
     if result.status_code  ~= 200 then
         error("Failed to send keys: " .. (result.read_body() or "Unknown error"))
+    end
+
+    return true
+end
+
+PublicElement.clear = function(public, private)
+    -- Send a POST request to clear the element's value
+    local result = private.fetch({
+        url = private.url .. "/session/" .. private.session_id .. "/element/" .. private.element_id .. "/clear",
+        method = "POST",
+        http_version = "1.1",
+        body = {}
+    })
+
+    -- Check for errors in the response
+    if result.status_code ~= 200 then
+        error("Failed to clear element: " .. (result.read_body() or "Unknown error"))
     end
 
     return true
