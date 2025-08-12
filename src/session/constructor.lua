@@ -30,6 +30,9 @@ Session.newSession = function (private_server_props,props)
         end 
         
         local use_automation_extension = props.use_automation_extension or false
+        if not props.binary_location then 
+            error("binary location its required")
+        end 
         body = {
                 capabilities = {
                     alwaysMatch = {

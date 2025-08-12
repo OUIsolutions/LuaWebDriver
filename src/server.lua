@@ -20,9 +20,6 @@ Server.newSession = function(public,private, props)
     if not props then 
         error("props is required")
     end
-    if not props.binary_location then
-        error("binary_location is required")
-    end
 
     local created =  Session.newSession(private, props)
     created.server = public
