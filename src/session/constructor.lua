@@ -11,11 +11,8 @@ Session.newSession = function (private_server_props,props)
     selfobject.public_method_extends(PublicSession)
 
 
-
-
-
-    local requisition = props.requisition
-    if not requisition then 
+    local body = props.body
+    if not body then 
 
         local args = props.args 
         if not args then 
@@ -33,10 +30,7 @@ Session.newSession = function (private_server_props,props)
         end 
         
         local use_automation_extension = props.use_automation_extension or false
-        requisition = {
-            method = "POST",
-            http_version = "1.1",
-            body = {
+        body = {
                 capabilities = {
                     alwaysMatch = {
                         browserName = "chrome",
@@ -51,21 +45,25 @@ Session.newSession = function (private_server_props,props)
                         }
                     }
                 }
-            }
         }
+        
     end
-    requisition.url =selfobject.private.url.."/session"
 
-
-
+    local requisition = {
+            url =selfobject.private.url.."/session",
+            method = "POST",
+            http_version = "1.1",
+            body=body   
+    }
+    
     local result = selfobject.private.fetch(requisition)
 
     
-    local body = result.read_body_json()
-    selfobject.private.session_id = body.value.sessionId
+    local response_body = result.read_body_json()
+    selfobject.private.session_id = response_body.value.sessionId
 
     if not selfobject.private.session_id then 
-         error(json.dumps_to_string(body))
+         error(json.dumps_to_string(response_body))
     end
 
     return selfobject.public
