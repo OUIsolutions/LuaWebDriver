@@ -18,6 +18,38 @@ PublicSession.close = function (public, private)
     private.closed = true
 end
 
+
+
+-- Add this function to PublicSession
+PublicSession.execute_cdp_cmd = function(public, private, cmd, params)
+    if not cmd or type(cmd) ~= "string" then
+        error("CDP command must be a non-empty string")
+    end
+    
+    -- Default to empty params if not provided
+    if not params then
+        params = {}
+    end
+    
+    local result = private.fetch({
+        url = private.url .. "/session/" .. private.session_id .. "/goog/cdp/execute",
+        method = "POST",
+        http_version = "1.1",
+        body = {
+            cmd = cmd,
+            params = params
+        }
+    })
+    
+    if result.status_code ~= 200 then
+        local error_body = result.read_body()
+        error("Failed to execute CDP command '" .. cmd .. "': " .. (error_body or "Unknown error"))
+    end
+    
+    local body = result.read_body_json()
+    return body.value
+end
+
 -- Retorna a quantidade de abas (janelas) abertas na sessão
 PublicSession.get_window_count = function(public, private)
     local result = private.fetch({
