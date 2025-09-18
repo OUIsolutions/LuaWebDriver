@@ -1,0 +1,7 @@
+[
+  {
+    "type": "url",
+    "url": "https://github.com/mateusmoutinho/LuaHeritage/releases/download/1.0.0/heregitage.lua",
+    "dest": "dependencies/herigitage.lua"
+  }
+]
